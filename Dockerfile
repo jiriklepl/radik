@@ -5,20 +5,17 @@ ARG PIP_SOURCE_URL=https://mirrors.aliyun.com/pypi/simple/
 
 # ===========================
 # Build image
-FROM nvidia/cuda:11.6.2-devel-centos7 as build-image
+FROM nvidia/cuda:12.6.0-devel-ubuntu20.04 as build-image
 ARG SM_VERSION
 
-RUN yum clean all && yum makecache
-RUN yum install -y wget patch openssl-devel
-RUN yum install -y centos-release-scl && yum install -y devtoolset-10
+RUN apt-get update && apt-get install -y wget patch openssl libssl-dev build-essential
 
 WORKDIR /root/building
 
 # Install CMake
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3.tar.gz
 RUN tar xzf cmake-3.26.3.tar.gz
-RUN cd cmake-3.26.3 && source /opt/rh/devtoolset-10/enable \
-    && ./configure --parallel=`nproc` && make -j`nproc` && make install
+RUN cd cmake-3.26.3 && ./configure --parallel=`nproc` && make -j`nproc` && make install
 
 # Clean up
 RUN rm -rf /root/building
@@ -32,24 +29,22 @@ WORKDIR /radik
 COPY bitonic bitonic
 COPY patches/bitonic/Makefile.patch bitonic
 RUN cd bitonic && patch Makefile Makefile.patch
-RUN cd bitonic && source /opt/rh/devtoolset-10/enable \
-    && make -j`nproc` CUDA_PATH=$CUDA_HOME GENCODE_FLAGS=-arch=sm_$CUDA_SM_VERSION
+RUN cd bitonic && make -j`nproc` CUDA_PATH=$CUDA_HOME GENCODE_FLAGS=-arch=sm_$CUDA_SM_VERSION
 
 # Build block select (PQ-block)
 COPY blockselect blockselect
-RUN cd blockselect && source /opt/rh/devtoolset-10/enable \
-    && make -j`nproc` all && make clean
+RUN cd blockselect && make -j`nproc` all && make clean
 
 # Build RadiK & grid select (PQ-grid)
 COPY radik radik
-RUN cd radik && source /opt/rh/devtoolset-10/enable && make -j`nproc` all
+RUN cd radik && make -j`nproc` all
 
 # ===========================
 # Release image
-FROM nvidia/cuda:11.6.2-runtime-centos7
+FROM nvidia/cuda:12.6.0-runtime-ubuntu20.04
 ARG PIP_SOURCE_URL
 
-RUN yum install -y python3 python3-pip
+RUN apt-get update && apt-get install -y python3 python3-pip
 
 # Copy built binaries
 COPY --from=build-image /radik /radik

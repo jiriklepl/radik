@@ -32,14 +32,16 @@ GPU_FLAGS	?=	--gpus '"device=0"'
 RUN_FLAGS	:=	--name $(USER)-radik --rm $(GPU_FLAGS)
 MNT_FLAGS	:=  --mount type=bind,src=$(PLOT_DIR),dst=/radik/plot
 
+DOCKER = docker
+
 .PHONY: build
 build:
-	$(SUDO) docker build --build-arg SM_VERSION=$(SM_VERSION) -t radik .
+	$(DOCKER) build --build-arg SM_VERSION=$(SM_VERSION) -t radik .
 
 .PHONY: run
 run:
-	$(SUDO) docker run -it $(RUN_FLAGS) $(MNT_FLAGS) radik
+	$(DOCKER) run -it $(RUN_FLAGS) $(MNT_FLAGS) radik
 
 .PHONY: exec
 exec:
-	$(SUDO) docker run $(RUN_FLAGS) $(MNT_FLAGS) radik $(DOCKER_CMD)
+	$(DOCKER) run $(RUN_FLAGS) $(MNT_FLAGS) radik $(DOCKER_CMD)

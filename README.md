@@ -373,11 +373,11 @@ runme_full.sh # script for full evaluation
 
 ## References
 
-[1] Jeff Johnson, Matthijs Douze, and Hervé Jégou. 2021. Billion-scale similarity search with GPUs. IEEE Transactions on Big Data, 7, 3, 535–547. https://doi.ieeecomputersociety.org/10.1109/TBDATA.2019.2921572
+[1] Jeff Johnson, Matthijs Douze, and Hervé Jégou. 2021. Billion-scale similarity search with GPUs. IEEE Transactions on Big Data, 7, 3, 535–547. <https://doi.ieeecomputersociety.org/10.1109/TBDATA.2019.2921572>
 
-[2] Anil Shanbhag, Holger Pirk, and Samuel Madden. 2018. Efficient Top-K Query Processing on Massively Parallel Hardware. In Proceedings of the 2018 International Conference on Management of Data (SIGMOD '18). Association for Computing Machinery, New York, NY, USA, 1557–1570. https://doi.org/10.1145/3183713.3183735
+[2] Anil Shanbhag, Holger Pirk, and Samuel Madden. 2018. Efficient Top-K Query Processing on Massively Parallel Hardware. In Proceedings of the 2018 International Conference on Management of Data (SIGMOD '18). Association for Computing Machinery, New York, NY, USA, 1557–1570. <https://doi.org/10.1145/3183713.3183735>
 
-[3] Christina Zhang and Yong Wang. 2020. Accelerating top-k computation on GPU. NVIDIA. https://live.nvidia.cn/gtc-od/attachments/CNS20315.pdf.
+[3] Christina Zhang and Yong Wang. 2020. Accelerating top-k computation on GPU. NVIDIA. <https://live.nvidia.cn/gtc-od/attachments/CNS20315.pdf>.
 
 # Citation
 
