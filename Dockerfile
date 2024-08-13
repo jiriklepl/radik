@@ -1,11 +1,9 @@
 # NVIDIA GPU SM version (Compute Capability)
 ARG SM_VERSION=75
-# Mirror PyPi repository
-ARG PIP_SOURCE_URL=https://mirrors.aliyun.com/pypi/simple/
 
 # ===========================
 # Build image
-FROM nvidia/cuda:12.6.0-devel-ubuntu20.04 as build-image
+FROM nvidia/cuda:12.6.0-devel-ubuntu20.04 AS build-image
 ARG SM_VERSION
 
 RUN apt-get update && apt-get install -y wget patch openssl libssl-dev build-essential
@@ -42,7 +40,6 @@ RUN cd radik && make -j`nproc` all
 # ===========================
 # Release image
 FROM nvidia/cuda:12.6.0-runtime-ubuntu20.04
-ARG PIP_SOURCE_URL
 
 RUN apt-get update && apt-get install -y python3 python3-pip
 
@@ -51,10 +48,9 @@ COPY --from=build-image /radik /radik
 WORKDIR /radik
 
 # Install Python requirements
-ENV PIP_SOURCE ${PIP_SOURCE_URL}
-RUN python3 -m pip install pip -U -i $PIP_SOURCE
+RUN python3 -m pip install pip -U
 COPY requirements.txt .
-RUN python3 -m pip install -r requirements.txt -i $PIP_SOURCE
+RUN python3 -m pip install -r requirements.txt
 
 # Evaluation scripts
 COPY eval eval
